@@ -7,14 +7,12 @@ import processing.core.PVector;
 public class Driver extends PApplet{
 	
 	ArrayList<PVector> cities = new ArrayList<PVector>();	//Array of points which represent our cities
-	int numCities = 50;
-	int populationSize = 1000;
-	double mutationRate = .75;
-	int mutationStrength = 0;
+	int numCities = 20;
+	int populationSize = 500;
+	double mutationRate = .4;
 	int genCount = 0;
 	Population pop = new Population(populationSize,mutationRate,cities,numCities);
-	Salesman fittest = new Salesman(numCities);
-	int offset = -90;
+	int offset = -120;
 
 	
 	//MAIN
@@ -26,21 +24,21 @@ public class Driver extends PApplet{
 	//SETTINGS
 	public void settings(){
 			
-		size(800,400);
+		size(1920,400);
 	}
 		
 	//SETUP
 	public void setup(){
 	   	
 		
-	   	frameRate(99999999);	
+	   	frameRate(999999999);	
 		
 		//Create random points between the width and height of the window
-	   	float rx = 0;
+	   	float rx = 10;
     	for(int i = 0; i < numCities; i++){
     		
 	    	
-	    	float ry = (height/4) + random(20);
+	    	float ry = (height/4) + random(30);
 	    	cities.add(new PVector(rx,ry));
 	    	rx+=width/numCities;
     	}
@@ -68,7 +66,7 @@ public class Driver extends PApplet{
     	pop.createNewGeneration();
     	
     	//Draw the fittest member of the current generation
-    	Salesman currentFittest = pop.getFittestMember();
+    	Salesman currentFittest = pop.getCurrentFittestMember();
     	int[] genes = currentFittest.getGenes();
     	for(int i = 0; i < genes.length - 1; i++){
     		
@@ -90,13 +88,8 @@ public class Driver extends PApplet{
     		ellipse(cities.get(i).x, cities.get(i).y - offset,8,8);	
     	}
     	
-    	//Draw the fittest member among all generations
-    	if(fittest.compare(currentFittest, fittest) == -1){
-    		fittest = currentFittest;
-    	}
-    	
-    	
-    	int[] bestGenes = fittest.getGenes();
+    	//Draw the fittest member among all generations    	
+    	int[] bestGenes = pop.getFittestMember().getGenes();
     	for(int i = 0; i < bestGenes.length - 1; i++){
     		
     		int currentCity = bestGenes[i];
@@ -107,7 +100,7 @@ public class Driver extends PApplet{
     	}
     	
     	
-    	System.out.println(genCount);
+    	//System.out.println(genCount);
     	genCount++;
     	
 	}

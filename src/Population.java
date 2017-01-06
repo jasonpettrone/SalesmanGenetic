@@ -13,7 +13,7 @@ public class Population {
 	private double mutationRate;
 	private int size;
 	private int numCities;
-	private static Random r = new Random();
+	private Salesman fittest;
 	Comparator<Salesman> comparator = new Salesman(1);
 	
 	//Constructor to initialize a population of size n
@@ -25,6 +25,7 @@ public class Population {
 		heapPopulation = new PriorityQueue<Salesman>(comparator);
 		population = new ArrayList<Salesman>();
 		this.cities = cities;
+		fittest = new Salesman(numCities);
 	}
 	
 	//Creates our initial random population
@@ -46,9 +47,15 @@ public class Population {
 		parents[0] = heapPopulation.poll();
 		parents[1] = heapPopulation.peek();
 		
+		//Update our fittest salesman if applicable
+		if(parents[0].getFitness() > fittest.getFitness())
+			fittest = parents[0];
+		
+		//Check if the top two parents are equal. If they are, we search for one that is not equal
 		if(!Salesman.equals(parents[0], parents[1]))
 			parents[1] = heapPopulation.poll();
 		else{
+			//Search for unequal pair or until end of heap
 			while(Salesman.equals(parents[0], parents[1])){
 				if(heapPopulation.size() == 1)
 					break;
@@ -60,6 +67,7 @@ public class Population {
 		return parents;
 	}
 	
+	//Creates the next generation
 	public void createNewGeneration(){
 		
 		ArrayList<Salesman> newPop = new ArrayList<Salesman>();
@@ -79,10 +87,18 @@ public class Population {
 	}
 	
 	//Gets the fittest member of the current population
-	public Salesman getFittestMember(){
+	public Salesman getCurrentFittestMember(){
 		
 		return heapPopulation.peek();
 	}
+	
+	//Gets the fittest member of all generations
+	public Salesman getFittestMember(){
+		
+		return fittest;
+	}
+			
+	
 	
 	public String toString(){
 		
