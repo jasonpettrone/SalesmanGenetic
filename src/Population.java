@@ -7,13 +7,13 @@ import processing.core.PVector;
 
 public class Population {
 	
-	private ArrayList<Salesman> population;
-	private PriorityQueue<Salesman> heapPopulation;
-	private ArrayList<PVector> cities;
-	private double mutationRate;
-	private int size;
-	private int numCities;
-	private Salesman fittest;
+	private ArrayList<Salesman> population;			//Population of salesman
+	private PriorityQueue<Salesman> heapPopulation;	//Heap of salesman (used for sorting)
+	private ArrayList<PVector> cities;				//Cities
+	private double mutationRate;					//Mutation rate
+	private int size;								//Size of this population
+	private int numCities;							//Number of cities
+	private Salesman fittest;						//Fittest member of all generations
 	Comparator<Salesman> comparator = new Salesman(1);
 	
 	//Constructor to initialize a population of size n
@@ -45,23 +45,18 @@ public class Population {
 		Salesman[] parents = new Salesman[2];
 		
 		parents[0] = heapPopulation.poll();
-		parents[1] = heapPopulation.peek();
+		parents[1] = heapPopulation.poll();
 		
 		//Update our fittest salesman if applicable
 		if(parents[0].getFitness() > fittest.getFitness())
 			fittest = parents[0];
 		
-		//Check if the top two parents are equal. If they are, we search for one that is not equal
-		if(!Salesman.equals(parents[0], parents[1]))
-			parents[1] = heapPopulation.poll();
-		else{
-			//Search for unequal pair or until end of heap
-			while(Salesman.equals(parents[0], parents[1])){
-				if(heapPopulation.size() == 1)
-					break;
-				else
-					parents[1] = heapPopulation.poll();
-			}
+		//Check if the top two parents are equal. If they are, we search for another parent not equal to the first one
+		while(Salesman.equals(parents[0], parents[1])){
+			if(heapPopulation.size() == 1)
+				break;
+			else
+				parents[1] = heapPopulation.poll();
 		}
 		
 		return parents;
@@ -97,9 +92,22 @@ public class Population {
 		
 		return fittest;
 	}
+	
+	//Gives an average fitness of two parents reproducing for a set size
+	public double sample(Salesman parent1, Salesman parent2, int size){
+		
+		double average = 0;
+		
+		for(int i = 0; i < size; i++){
 			
-	
-	
+			Salesman child;
+			child = Salesman.reproduce(parent1, parent2, mutationRate);
+			average += (1+child.fitness(cities));
+		}
+		
+		return average/(double)size;
+	}
+			
 	public String toString(){
 		
 		return population.toString();

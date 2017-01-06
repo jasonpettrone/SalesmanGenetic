@@ -7,9 +7,9 @@ import processing.core.PVector;
 public class Driver extends PApplet{
 	
 	ArrayList<PVector> cities = new ArrayList<PVector>();	//Array of points which represent our cities
-	int numCities = 20;
-	int populationSize = 500;
-	double mutationRate = .4;
+	int numCities = 100;
+	int populationSize = 1000;
+	double mutationRate = .3;
 	int genCount = 0;
 	Population pop = new Population(populationSize,mutationRate,cities,numCities);
 	int offset = -120;
