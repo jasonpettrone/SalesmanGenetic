@@ -76,7 +76,7 @@ public class Salesman implements Comparator<Salesman>{
 	
 	//Reproduction method - Mates two parents to create a child, returns child
 	//The child's genes are produced by alternating between the two parents genes 
-	public static Salesman reproduce(Salesman parent1, Salesman parent2, double mutationRate, int mutationStrength){
+	public static Salesman reproduce(Salesman parent1, Salesman parent2, double mutationRate){
 		
 		Salesman child;
 		int[] parent1Genes = parent1.getGenes();
@@ -172,7 +172,7 @@ public class Salesman implements Comparator<Salesman>{
 		
 		//Chance a mutation on the child
 		if(Math.random() < mutationRate)
-			child.mutate(mutationStrength);
+			child.mutate();
 		
 		return child;
 		
@@ -180,17 +180,16 @@ public class Salesman implements Comparator<Salesman>{
 	
 	//Mutation function
 	//Mutation is done by swapping 2 random genes (indexes) with one another. The higher the mutation strength, the more swaps we do
-	public void mutate(int mutationStrength){
+	public void mutate(){
 		
-		for(int i = 0; i <= mutationStrength; i++){
-			//We add one to the random numbers because we don't want to swap the starting city
-			int first = r.nextInt(order.length-1) + 1;
-			int second = r.nextInt(order.length-1) + 1;
+		//We add one to the random numbers because we don't want to swap the starting city
+		int first = r.nextInt(order.length-1) + 1;
+		int second = r.nextInt(order.length-1) + 1;
 			
-			int temp = order[first];
-			order[first] = order[second];
-			order[second] = temp;
-		}
+		int temp = order[first];
+		order[first] = order[second];
+		order[second] = temp;
+		
 	}
 	
 	@Override

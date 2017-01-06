@@ -11,7 +11,6 @@ public class Population {
 	private PriorityQueue<Salesman> heapPopulation;
 	private ArrayList<PVector> cities;
 	private double mutationRate;
-	private int mutationStrength;
 	private int size;
 	private int numCities;
 	private static Random r = new Random();
@@ -22,7 +21,6 @@ public class Population {
 		
 		size = n;
 		this.mutationRate = mutationRate;
-		mutationStrength = 0;
 		this.numCities = numCities;
 		heapPopulation = new PriorityQueue<Salesman>(comparator);
 		population = new ArrayList<Salesman>();
@@ -69,7 +67,7 @@ public class Population {
 
 		Salesman[] parents = selection();
 		for(int i = 0; i < population.size(); i++){
-			Salesman child = Salesman.reproduce(parents[0], parents[1], mutationRate, mutationStrength);
+			Salesman child = Salesman.reproduce(parents[0], parents[1], mutationRate);
 			newPop.add(child);
 			newPop.get(i).fitness(cities);
 			newHeap.add(child);
@@ -84,11 +82,6 @@ public class Population {
 	public Salesman getFittestMember(){
 		
 		return heapPopulation.peek();
-	}
-	
-	public void setMutationStrength(int strength){
-		
-		mutationStrength = strength;
 	}
 	
 	public String toString(){

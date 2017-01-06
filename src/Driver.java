@@ -9,7 +9,7 @@ public class Driver extends PApplet{
 	ArrayList<PVector> cities = new ArrayList<PVector>();	//Array of points which represent our cities
 	int numCities = 50;
 	int populationSize = 1000;
-	double mutationRate = .5;
+	double mutationRate = .75;
 	int mutationStrength = 0;
 	int genCount = 0;
 	Population pop = new Population(populationSize,mutationRate,cities,numCities);
@@ -40,7 +40,7 @@ public class Driver extends PApplet{
     	for(int i = 0; i < numCities; i++){
     		
 	    	
-	    	float ry = (height/2) + random(20);
+	    	float ry = (height/4) + random(20);
 	    	cities.add(new PVector(rx,ry));
 	    	rx+=width/numCities;
     	}
