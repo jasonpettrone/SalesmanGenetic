@@ -11,6 +11,7 @@ public class Population {
 	private PriorityQueue<Salesman> heapPopulation;	//Heap of salesman (used for sorting)
 	private ArrayList<PVector> cities;				//Cities
 	private Salesman fittest;						//Fittest member of all generations
+	private Salesman[] fittestParents;				//Parents that created the fittest member
 	private static Random r = new Random();			//Random number generator
 	private double mutationRate;					//Mutation rate
 	private int size;								//Size of this population
@@ -86,16 +87,17 @@ public class Population {
 		//Update our fittest salesman if applicable
 		if(parents[0].getFitness() > fittest.getFitness())
 			fittest = parents[0];
-		 
+
 		//Check if the top two parents are equal. If they are, we search for another parent not equal to the first one
 		while(Salesman.equals(parents[0], parents[1])){
-			if(heapPopulation.size() == 1)
+			if(heapPopulation.size() == 1){
 				break;
+			}
 			else
 				parents[1] = heapPopulation.poll();
 		}
 		
-		return parents;
+		return parents;	
 	}
 	
 	//Creates a gene pool for selection
@@ -126,6 +128,11 @@ public class Population {
 			newPop.get(i).fitness(cities);
 			newHeap.add(child);
 		}	
+		
+		//Update fittest parents if applicable
+		if(newHeap.peek().getFitness() > fittest.getFitness()){
+			fittestParents = parents;
+		}
 		
 		heapPopulation = newHeap;
 		population = newPop;
