@@ -92,8 +92,6 @@ public class Salesman implements Comparator<Salesman>{
 		//Alternate between the two parents to produce the child
 		for(int i = 1; i < parent1Genes.length; i++){
 			
-			
-			
 			//What will we do if there is a repeat value?
 			//We will go into the next parents genes and find the closest index to the current one
 			//that doesn't have a repeating value. This will maintain some level of order between parent and child.
@@ -170,9 +168,15 @@ public class Salesman implements Comparator<Salesman>{
 		//Child is born!
 		child = new Salesman(childGenes);
 		
+		//Mutation strength will modify how many chances this child has at a mutation
+		//Mutation strength will increase as the number of cities increase.
+		int mutationStrength = (int)Math.round(childGenes.length * .05);
+		
 		//Chance a mutation on the child
-		if(Math.random() < mutationRate)
-			child.mutate();
+		for(int i = 0; i < mutationStrength; i++){
+			if(Math.random() < mutationRate)
+				child.mutate();
+		}
 		
 		return child;
 		
