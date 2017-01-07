@@ -14,6 +14,7 @@ public class Salesman implements Comparator<Salesman>{
 	
 	private double fitness;	//This set of genes fitness
 	private double dist;	//Distance this salesman travelled based on its order
+	private static int numCities;	//Number of cities
 	
 	private static Random r  = new Random();
 	
@@ -22,9 +23,11 @@ public class Salesman implements Comparator<Salesman>{
 	public Salesman(int numCities){
 		
 		ArrayList<Integer> cities = new ArrayList<Integer>();
-		order = new int[numCities];
+		this.numCities = numCities;
+		order = new int[numCities+1];
 		this.fitness = 0;
 		order[0] = 0;
+		order[numCities] = 0;
 		
 		for(int i = 1; i < numCities; i++)
 			cities.add(i);
@@ -96,7 +99,7 @@ public class Salesman implements Comparator<Salesman>{
 		HashSet<Integer> genePool = new HashSet<Integer>();	
 		
 		//Alternate between the two parents to produce the child
-		for(int i = 1; i < parent1Genes.length; i++){
+		for(int i = 1; i < numCities; i++){
 			
 			//What will we do if there is a repeat value?
 			//We will go into the next parents genes and find the closest index to the current one
@@ -111,14 +114,14 @@ public class Salesman implements Comparator<Salesman>{
 					int left;	//Cursor that will go left from the current position
 					int right;	//Cursor that will go right from the current position
 					
-					for(left = i,right = i; left>=1 || right<parent1Genes.length; left--,right++){
+					for(left = i,right = i; left>=1 || right<numCities; left--,right++){
 						
 						//If left cursor reaches the min, repurpose to search from the top
 						if(left == 1)
-							left = parent1Genes.length - 1;
+							left = numCities - 1;
 						
 						//If right cursor reaches max, repurpose to search from bottom
-						if(right == parent1Genes.length - 1)
+						if(right == numCities)
 							right = 1;
 						
 						//Add if right cursor finds a non repeat
@@ -147,12 +150,12 @@ public class Salesman implements Comparator<Salesman>{
 					int left;	//Cursor that will go left from the current position
 					int right;	//Cursor that will go right from the current position
 					
-					for(left = i,right = i; left>=1 || right<parent1Genes.length; left--,right++){
+					for(left = i,right = i; left>=1 || right<numCities; left--,right++){
 						
 						if(left == 1)
-							left = parent1Genes.length - 1;
+							left = numCities - 1;
 						
-						if(right == parent1Genes.length - 1)
+						if(right == numCities - 1)
 							right = 1;
 						
 						if(genePool.add(parent1Genes[right])){
@@ -194,8 +197,8 @@ public class Salesman implements Comparator<Salesman>{
 	public void mutate(){
 		
 		//We add one to the random numbers because we don't want to swap the starting city
-		int first = r.nextInt(order.length-1) + 1;
-		int second = r.nextInt(order.length-1) + 1;
+		int first = r.nextInt(numCities - 1) + 1;
+		int second = r.nextInt(numCities - 1) + 1;
 			
 		int temp = order[first];
 		order[first] = order[second];
