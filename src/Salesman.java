@@ -13,6 +13,7 @@ public class Salesman implements Comparator<Salesman>{
 							//This is the salesman's genes
 	
 	private double fitness;	//This set of genes fitness
+	private double dist;	//Distance this salesman travelled based on its order
 	
 	private static Random r  = new Random();
 	
@@ -55,6 +56,11 @@ public class Salesman implements Comparator<Salesman>{
 		return this.fitness;
 	}
 	
+	public double getDist(){
+		
+		return dist;
+	}
+	
 	//Fitness function
 	//Fitness of a given salesman is defined by how short of a distance it took for them to traverse the cities
 	public double fitness(ArrayList<PVector> cities){
@@ -67,7 +73,7 @@ public class Salesman implements Comparator<Salesman>{
 			
 			fitness += PApplet.dist(cities.get(currentCity).x, cities.get(currentCity).y, cities.get(nextCity).x, cities.get(nextCity).y);
 		}
-		
+		dist = fitness;
 		fitness = 1.0/fitness;
 		this.fitness = fitness;
 		
@@ -115,12 +121,13 @@ public class Salesman implements Comparator<Salesman>{
 						if(right == parent1Genes.length - 1)
 							right = 1;
 						
-						//Add
+						//Add if right cursor finds a non repeat
 						if(genePool.add(parent2Genes[right])){
 							childGenes[i] = parent2Genes[right];
 							break;
 						}
 						
+						//Add if left cursor finds a non repeat
 						if(genePool.add(parent2Genes[left])){
 							childGenes[i] = parent2Genes[left];
 							break;
@@ -170,7 +177,7 @@ public class Salesman implements Comparator<Salesman>{
 		
 		//Mutation strength will modify how many chances this child has at a mutation
 		//Mutation strength will increase as the number of cities increase.
-		int mutationStrength = (int)Math.round(childGenes.length * .05);
+		int mutationStrength = 3 + (int)Math.round(childGenes.length * .02);
 		
 		//Chance a mutation on the child
 		for(int i = 0; i < mutationStrength; i++){
