@@ -51,10 +51,6 @@ public class Population {
 		parents[0] = heapPopulation.poll();	//Parent 1
 		parents[1] = heapPopulation.poll();	//Parent 2
 			
-		//Update our fittest salesman if applicable
-		if(parents[0].getFitness() > fittest.getFitness())
-			fittest = parents[0];
-
 		//Check if the top two parents are equal. If they are, we search for another parent not equal to the first one
 		while(Salesman.equals(parents[0], parents[1])){
 			if(heapPopulation.size() == 1){
@@ -115,6 +111,10 @@ public class Population {
 		if(newHeap.peek().getFitness() > fittest.getFitness()){
 			fittestParents = parents;
 		}
+		
+		//Update fittest salesman if applicable
+		if(heapPopulation.peek().getFitness() > fittest.getFitness())
+			fittest = heapPopulation.peek();
 		
 		heapPopulation = newHeap;
 		population = newPop;
