@@ -12,9 +12,11 @@ public class Salesman implements Comparator<Salesman>{
 	private int[] order;	//Order of cities the salesman will traverse
 							//This is the salesman's genes
 	
-	private double fitness;	//This set of genes fitness
-	private double dist;	//Distance this salesman travelled based on its order
+	private double fitness;			//This set of genes fitness
+	private double dist;			//Distance this salesman travelled based on its order
 	private static int numCities;	//Number of cities
+	
+	//private static int mutationStrength;
 	
 	private static Random r  = new Random();
 	
@@ -23,7 +25,8 @@ public class Salesman implements Comparator<Salesman>{
 	public Salesman(int numCities){
 		
 		ArrayList<Integer> cities = new ArrayList<Integer>();
-		this.numCities = numCities;
+		Salesman.numCities = numCities;
+		//Salesman.mutationStrength = 1 + (numCities/10 + (int)Math.round(numCities * .03));
 		order = new int[numCities+1];
 		this.fitness = 0;
 		order[0] = 0;
@@ -178,15 +181,9 @@ public class Salesman implements Comparator<Salesman>{
 		//Child is born!
 		child = new Salesman(childGenes);
 		
-		//Mutation strength will modify how many chances this child has at a mutation
-		//Mutation strength will increase as the number of cities increase.
-		int mutationStrength = 1 + (numCities/10 + (int)Math.round(childGenes.length * .03));
-		
 		//Chance a mutation on the child
-		for(int i = 0; i < mutationStrength; i++){
-			if(Math.random() < mutationRate)
-				child.mutate();
-		}
+		if(Math.random() < mutationRate)
+			child.mutate2();
 		
 		return child;
 		
@@ -203,6 +200,39 @@ public class Salesman implements Comparator<Salesman>{
 		int temp = order[first];
 		order[first] = order[second];
 		order[second] = temp;
+	}
+	
+	//Second mutation function
+	//Mutation is done by reversing a random range of genes.
+	//Example: [1,2,3,4,5,6] -> random range to reverse: (1,4) -> [1,5,4,3,2,6]
+	public void mutate2(){
+		
+		//Get 2 random indexes for our range
+		int begin = r.nextInt(numCities - 1) + 1;
+		int end = r.nextInt(numCities - 1) + 1;
+		
+		//Make sure the two indexes are not equal
+		while(end == begin)
+			end = r.nextInt(numCities - 1) + 1;
+		
+		//Make sure begin is the starting index and end is the ending index
+		if(begin > end){
+			int temp = begin;
+			begin = end;
+			end = temp;
+		}
+		
+		//Get the midpoint between the indexes. This will help us do the reversing in O(n) time.
+		int midpoint = (begin + end) / 2;
+		
+		//Start reversing
+		for(int i = begin; i <= midpoint; i++, end--){
+			
+			int temp = order[i];
+			order[i] = order[end];
+			order[end] = temp;
+		}
+		
 	}
 	
 	@Override
