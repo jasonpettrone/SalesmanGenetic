@@ -7,9 +7,9 @@ import processing.core.PVector;
 public class Driver extends PApplet{
 	
 	ArrayList<PVector> cities = new ArrayList<PVector>();	//Array of points which represent our cities
-	int numCities = 60;
+	int numCities = 50;
 	int populationSize = 1000;
-	double mutationRate = .36;
+	double mutationRate = .05;
 	int genCount = 0;
 	
 	Population pop = new Population(populationSize,mutationRate,cities,numCities);
@@ -27,12 +27,13 @@ public class Driver extends PApplet{
 			
 		size(1920,600);
 	}
+	
 		
 	//SETUP
 	public void setup(){
 	   	
 		
-	   	frameRate(999999999);	
+	   	frameRate(99999999);	
 		
 		//Create random points between the width and height of the window
 	   	cities.add(new PVector(20,80));
@@ -44,7 +45,6 @@ public class Driver extends PApplet{
     	}
     	
     	pop.createInitialPop();
-		
 	}
 	   
 	//DRAW

@@ -98,6 +98,7 @@ public class Population {
 		
 		//Parents for the selection process
 		Salesman[] parents = new Salesman[2];
+		//parents = selection();
 		
 		for(int i = 0; i < population.size(); i++){
 			
