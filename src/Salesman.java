@@ -180,7 +180,7 @@ public class Salesman implements Comparator<Salesman>{
 		
 		//Mutation strength will modify how many chances this child has at a mutation
 		//Mutation strength will increase as the number of cities increase.
-		int mutationStrength = 3 + (int)Math.round(childGenes.length * .02);
+		int mutationStrength = 1 + (numCities/10 + (int)Math.round(childGenes.length * .03));
 		
 		//Chance a mutation on the child
 		for(int i = 0; i < mutationStrength; i++){
@@ -203,7 +203,6 @@ public class Salesman implements Comparator<Salesman>{
 		int temp = order[first];
 		order[first] = order[second];
 		order[second] = temp;
-		
 	}
 	
 	@Override
