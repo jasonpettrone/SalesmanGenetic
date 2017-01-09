@@ -79,8 +79,10 @@ public class Population {
 		//Select a winner
 		for(int i = 0; i < tournamentSize; i++){
 			
-			if(Math.random() < .5)
+			if(Math.random() < .5){
 				winner = tournamentPool.poll();
+				break;
+			}
 		}
 		
 		return winner;
@@ -95,15 +97,15 @@ public class Population {
 		PriorityQueue<Salesman> newHeap = new PriorityQueue<Salesman>(comparator);
 		
 		//Parents for the selection process
-		Salesman[] parents = selection();
+		Salesman[] parents = new Salesman[2];
 		
 		for(int i = 0; i < population.size(); i++){
 			
-			/*
+			
 			//Select parents through tournament selection
-			parents[0] = selection(size/4);
-			parents[1] = selection(size/4);
-			*/
+			parents[0] = selection(70);
+			parents[1] = selection(70);
+			
 			
 			//Use those parents to create a child
 			Salesman child = Salesman.reproduce(parents[0], parents[1], mutationRate);
@@ -120,8 +122,8 @@ public class Population {
 		}
 		
 		//Update fittest salesman if applicable
-		if(heapPopulation.peek().getFitness() > fittest.getFitness())
-			fittest = heapPopulation.peek();
+		if(newHeap.peek().getFitness() > fittest.getFitness())
+			fittest = newHeap.peek();
 		
 		heapPopulation = newHeap;
 		population = newPop;
