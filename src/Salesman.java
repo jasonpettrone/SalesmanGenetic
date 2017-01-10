@@ -15,18 +15,14 @@ public class Salesman implements Comparator<Salesman>{
 	private double fitness;			//This set of genes fitness
 	private double dist;			//Distance this salesman travelled based on its order
 	private static int numCities;	//Number of cities
-	
-	//private static int mutationStrength;
-	
 	private static Random r  = new Random();
 	
-	//Constructor - Create a DNA object with a random order
-	//All salesman, regardless of their order, must start at the same city
+	//Constructor - Create a Salesman object with a random order
+	//All salesman, regardless of their order, must start at the same city and end at the same city
 	public Salesman(int numCities){
 		
 		ArrayList<Integer> cities = new ArrayList<Integer>();
 		Salesman.numCities = numCities;
-		//Salesman.mutationStrength = 1 + (numCities/10 + (int)Math.round(numCities * .03));
 		order = new int[numCities+1];
 		this.fitness = 0;
 		order[0] = 0;
@@ -44,7 +40,7 @@ public class Salesman implements Comparator<Salesman>{
 		}
 	}
 	
-	//Constructor - create a DNA object with a specified order
+	//Constructor - create a Salesman object with a specified order
 	public Salesman(int[] order){
 		
 		this.fitness = 0;
@@ -57,11 +53,13 @@ public class Salesman implements Comparator<Salesman>{
 		return order;
 	}
 	
+	//Get fitness
 	public double getFitness(){
 		
 		return this.fitness;
 	}
 	
+	//Get distance
 	public double getDist(){
 		
 		return dist;
@@ -86,7 +84,7 @@ public class Salesman implements Comparator<Salesman>{
 		return fitness;
 	}
 	
-	//Reproduction method - Mates two parents to create a child, returns child
+	//Reproduction method - Mates two parents to create a child, returns the child
 	//The child's genes are produced by alternating between the two parents genes 
 	public static Salesman reproduce(Salesman parent1, Salesman parent2, double mutationRate){
 		
@@ -183,29 +181,16 @@ public class Salesman implements Comparator<Salesman>{
 		
 		//Chance a mutation on the child
 		if(Math.random() < mutationRate)
-			child.mutate2();
+			child.mutate();
 		
 		return child;
 		
 	}
 	
-	//Mutation function
-	//Mutation is done by swapping 2 random genes (indexes) with one another. The higher the mutation strength, the more swaps we do
-	public void mutate(){
-		
-		//We add one to the random numbers because we don't want to swap the starting city
-		int first = r.nextInt(numCities - 1) + 1;
-		int second = r.nextInt(numCities - 1) + 1;
-			
-		int temp = order[first];
-		order[first] = order[second];
-		order[second] = temp;
-	}
-	
 	//Second mutation function
 	//Mutation is done by reversing a random range of genes.
 	//Example: [1,2,3,4,5,6] -> random range to reverse: (1,4) -> [1,5,4,3,2,6]
-	public void mutate2(){
+	public void mutate(){
 		
 		//Get 2 random indexes for our range
 		int begin = r.nextInt(numCities - 1) + 1;
@@ -235,6 +220,7 @@ public class Salesman implements Comparator<Salesman>{
 		
 	}
 	
+	//Comparator based on fitness
 	@Override
 	public int compare(Salesman o1, Salesman o2) {
 		
@@ -246,6 +232,7 @@ public class Salesman implements Comparator<Salesman>{
 			return 0;	
 	}
 	
+	//Equal based on order
 	public static boolean equals(Salesman o1, Salesman o2){
 		
 		int[] salesman1Genes = o1.getGenes();

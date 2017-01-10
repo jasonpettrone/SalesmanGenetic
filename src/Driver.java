@@ -7,13 +7,15 @@ import processing.core.PVector;
 public class Driver extends PApplet{
 	
 	ArrayList<PVector> cities = new ArrayList<PVector>();	//Array of points which represent our cities
-	int numCities = 50;
-	int populationSize = 1000;
-	double mutationRate = .05;
-	int genCount = 0;
+	int numCities = 100;		//Number of cities
+	int populationSize = 1000;	//Population size
+	double mutationRate = .5;	//Mutation rate
+	int genCount = 0;			//Number of generations accumulated
 	
+	//Create the population
 	Population pop = new Population(populationSize,mutationRate,cities,numCities);
-	int offset = -300;
+	
+	int offset = -300;	//Offset is used for draw functionality. It handles drawing of the best gen
 
 	
 	//MAIN
@@ -25,7 +27,7 @@ public class Driver extends PApplet{
 	//SETTINGS
 	public void settings(){
 			
-		size(1920,600);
+		size(1920,600);	//Window size
 	}
 	
 		
@@ -35,8 +37,9 @@ public class Driver extends PApplet{
 		
 	   	frameRate(99999999);	
 		
+	   	cities.add(new PVector(20,80));	//Starting point
+	   	
 		//Create random points between the width and height of the window
-	   	cities.add(new PVector(20,80));
     	for(int i = 0; i < numCities-1; i++){
     		
     		float rx = random(width);
@@ -80,7 +83,7 @@ public class Driver extends PApplet{
     	}
     	
     	
-    	//Draw the points to the window
+    	//Draw the points to the window for the fittest member of all generations
     	stroke(255,0,0);
     	fill(255,0,0);
     	ellipse(cities.get(0).x, cities.get(0).y - offset,15,15);
@@ -104,6 +107,7 @@ public class Driver extends PApplet{
     		bestDistance += dist(cities.get(currentCity).x,cities.get(currentCity).y-offset,cities.get(nextCity).x,cities.get(nextCity).y-offset);
     	}
     	
+    	//Code for drawing text to the window (genCount, genDist, ect...)
     	stroke(255,255,255);
     	fill(255,255,255);
     	textSize(20);
@@ -111,7 +115,6 @@ public class Driver extends PApplet{
     	text("Gen distance: " + currentDistance, 0, 60);
     	text("Best distance: " + bestDistance, 0, 290);
     	genCount++;
-    	
 	}
 
 }

@@ -42,41 +42,25 @@ public class Population {
 	}
 	
 	
-	//Survival of the fittest. Chooses what parents will create the next generation.
-	//The parents are chosen off the top of a heap, so the two strongest parents will create the next generation
-	public Salesman[] selection(){
-			
-		Salesman[] parents = new Salesman[2];
-			
-		parents[0] = heapPopulation.poll();	//Parent 1
-		parents[1] = heapPopulation.poll();	//Parent 2
-			
-		//Check if the top two parents are equal. If they are, we search for another parent not equal to the first one
-		while(Salesman.equals(parents[0], parents[1])){
-			if(heapPopulation.size() == 1){
-				break;
-			}
-			else
-				parents[1] = heapPopulation.poll();
-		}
-		
-		return parents;	
-	}
-	
 	//Tournament selection
+	//Adjusting the tournament size will allow for stronger members to be selected
 	public Salesman selection(int tournamentSize){
 		
 		Salesman winner = fittest;
 		
 		//Create the tournament pool
-		//The pool is a heap, so the top of the heap will have the fittest member of the tournament
+		//The pool is a heap, so the top of the heap will have the winner of the tournament
 		PriorityQueue<Salesman> tournamentPool = new PriorityQueue<Salesman>(comparator);
+		
+		//Pick random candidates from the current population and add them to the heap
 		for(int i = 0; i < tournamentSize; i++){
 			int candidate = r.nextInt(size);
 			tournamentPool.add(population.get(candidate));
 		}
 		
 		//Select a winner
+		//The winner will always be on top of the heap, but to promote a little variation we won't always select
+		//the top member.
 		for(int i = 0; i < tournamentSize; i++){
 			
 			if(Math.random() < .5){
@@ -88,8 +72,10 @@ public class Population {
 		return winner;
 	}
 	
-	
 	//Creates the next generation
+	//In this method we perform selection on the current population and create 'n' number of children
+	//(n being the size of the population) from the parents selected. The new population then overrides
+	//the current one.
 	public void createNewGeneration(){
 		
 		//New population and heap for next generation
@@ -98,22 +84,23 @@ public class Population {
 		
 		//Parents for the selection process
 		Salesman[] parents = new Salesman[2];
-		//parents = selection();
 		
 		for(int i = 0; i < population.size(); i++){
 			
-			
 			//Select parents through tournament selection
-			parents[0] = selection(70);
-			parents[1] = selection(70);
-			
+			parents[0] = selection(size/10);
+			parents[1] = selection(size/10);
 			
 			//Use those parents to create a child
 			Salesman child = Salesman.reproduce(parents[0], parents[1], mutationRate);
 			
 			//Add the child to the new population
 			newPop.add(child);
+			
+			//Calculate its fitness
 			newPop.get(i).fitness(cities);
+			
+			//Add it to the heap aswell
 			newHeap.add(child);
 		}
 		
@@ -126,6 +113,7 @@ public class Population {
 		if(newHeap.peek().getFitness() > fittest.getFitness())
 			fittest = newHeap.peek();
 		
+		//Start the new gen
 		heapPopulation = newHeap;
 		population = newPop;
 	}
@@ -140,21 +128,6 @@ public class Population {
 	public Salesman getFittestMember(){
 		
 		return fittest;
-	}
-	
-	//Gives an average fitness of two parents reproducing for a set size
-	public double sample(Salesman parent1, Salesman parent2, int size){
-		
-		double average = 0;
-		
-		for(int i = 0; i < size; i++){
-			
-			Salesman child;
-			child = Salesman.reproduce(parent1, parent2, mutationRate);
-			average += (1+child.fitness(cities));
-		}
-		
-		return average/(double)size;
 	}
 			
 	public String toString(){
