@@ -13,7 +13,7 @@ public class Salesman implements Comparator<Salesman>{
 							//This is the salesman's genes
 	
 	private double fitness;			//This set of genes fitness
-	private double dist;			//Distance this salesman travelled based on its order
+	private double dist;			//Distance this salesman traveled based on its order
 	private static int numCities;	//Number of cities
 	private static Random r  = new Random();
 	
@@ -96,7 +96,7 @@ public class Salesman implements Comparator<Salesman>{
 		
 		//When we reproduce these two salesman we need to make sure that we don't make them go to the same city twice.
 		//Since our order should never have repeating values, we can use a hash set to check if we are trying to add the
-		//same city twice. (when adding a repeat value to a hashset it will return false).
+		//same city twice. (when adding a repeat value to a HashSet it will return false).
 		HashSet<Integer> genePool = new HashSet<Integer>();	
 		
 		//Alternate between the two parents to produce the child
@@ -187,7 +187,7 @@ public class Salesman implements Comparator<Salesman>{
 		
 	}
 	
-	//Second mutation function
+	//Mutation function
 	//Mutation is done by reversing a random range of genes.
 	//Example: [1,2,3,4,5,6] -> random range to reverse: (1,4) -> [1,5,4,3,2,6]
 	public void mutate(){

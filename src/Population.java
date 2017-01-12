@@ -16,6 +16,8 @@ public class Population {
 	private double mutationRate;					//Mutation rate
 	private int size;								//Size of this population
 	private int numCities;							//Number of cities
+	private int genCount;							//Number of generations
+	private int bestGen;							//Generation the best salesman was found in
 	
 	Comparator<Salesman> comparator = new Salesman(1);
 	
@@ -29,6 +31,7 @@ public class Population {
 		population = new ArrayList<Salesman>();
 		this.cities = cities;
 		fittest = new Salesman(numCities);
+		genCount = 0;
 	}
 	
 	//Creates our initial random population
@@ -110,12 +113,15 @@ public class Population {
 		}
 		
 		//Update fittest salesman if applicable
-		if(newHeap.peek().getFitness() > fittest.getFitness())
+		if(newHeap.peek().getFitness() > fittest.getFitness()){
+			bestGen = genCount;
 			fittest = newHeap.peek();
+		}
 		
 		//Start the new gen
 		heapPopulation = newHeap;
 		population = newPop;
+		genCount++;
 	}
 	
 	//Gets the fittest member of the current population
@@ -128,6 +134,18 @@ public class Population {
 	public Salesman getFittestMember(){
 		
 		return fittest;
+	}
+	
+	//Gets the generation number the best salesman was found in
+	public int getBestGenNum(){
+		
+		return bestGen;
+	}
+	
+	//Get generation count
+	public int getGenCount(){
+		
+		return genCount;
 	}
 			
 	public String toString(){

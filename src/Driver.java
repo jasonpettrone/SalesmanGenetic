@@ -1,4 +1,5 @@
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import processing.core.PApplet;
@@ -6,18 +7,17 @@ import processing.core.PVector;
 
 public class Driver extends PApplet{
 	
+	DecimalFormat df = new DecimalFormat("0.00");
 	ArrayList<PVector> cities = new ArrayList<PVector>();	//Array of points which represent our cities
 	int numCities = 100;		//Number of cities
 	int populationSize = 1000;	//Population size
 	double mutationRate = .5;	//Mutation rate
-	int genCount = 0;			//Number of generations accumulated
-	
+
 	//Create the population
 	Population pop = new Population(populationSize,mutationRate,cities,numCities);
 	
 	int offset = -300;	//Offset is used for draw functionality. It handles drawing of the best gen
 
-	
 	//MAIN
 	public static void main(String[] args){
 			
@@ -34,10 +34,10 @@ public class Driver extends PApplet{
 	//SETUP
 	public void setup(){
 	   	
+	   	frameRate(999999999);	
 		
-	   	frameRate(99999999);	
-		
-	   	cities.add(new PVector(20,80));	//Starting point
+	   	//Starting point
+	   	cities.add(new PVector(20,80));	
 	   	
 		//Create random points between the width and height of the window
     	for(int i = 0; i < numCities-1; i++){
@@ -47,12 +47,13 @@ public class Driver extends PApplet{
 	    	cities.add(new PVector(rx,ry));
     	}
     	
+    	//Create our initial population
     	pop.createInitialPop();
 	}
 	   
 	//DRAW
 	public void draw(){
-	    
+		
 		background(0);
 		
 		//Draw the points to the window
@@ -66,9 +67,8 @@ public class Driver extends PApplet{
     		ellipse(cities.get(i).x, cities.get(i).y,8,8);	
     	}
     	
+    	//Create the next generation
     	pop.createNewGeneration();
-    	
-    	float currentDistance = 0;	//Current tour distance for this generation
     	
     	//Draw the fittest member of the current generation
     	Salesman currentFittest = pop.getCurrentFittestMember();
@@ -79,7 +79,6 @@ public class Driver extends PApplet{
     		int nextCity = genes[i+1];
     		
     		line(cities.get(currentCity).x,cities.get(currentCity).y,cities.get(nextCity).x,cities.get(nextCity).y);
-    		currentDistance += dist(cities.get(currentCity).x,cities.get(currentCity).y,cities.get(nextCity).x,cities.get(nextCity).y);
     	}
     	
     	
@@ -96,25 +95,22 @@ public class Driver extends PApplet{
     	
     	//Draw the fittest member among all generations    	
     	int[] bestGenes = pop.getFittestMember().getGenes();
-    	float bestDistance = 0;
     	for(int i = 0; i < bestGenes.length - 1; i++){
     		
     		int currentCity = bestGenes[i];
     		int nextCity = bestGenes[i+1];
-    		
     		stroke(0,255,0);
     		line(cities.get(currentCity).x,cities.get(currentCity).y-offset,cities.get(nextCity).x,cities.get(nextCity).y-offset);
-    		bestDistance += dist(cities.get(currentCity).x,cities.get(currentCity).y-offset,cities.get(nextCity).x,cities.get(nextCity).y-offset);
     	}
     	
     	//Code for drawing text to the window (genCount, genDist, ect...)
     	stroke(255,255,255);
     	fill(255,255,255);
     	textSize(20);
-    	text("Gen #: " + genCount, 0,30);
-    	text("Gen distance: " + currentDistance, 0, 60);
-    	text("Best distance: " + bestDistance, 0, 290);
-    	genCount++;
+    	text("Gen #: " + pop.getGenCount(), 0,30);
+    	text("Gen distance: " + df.format(currentFittest.getDist()), 0, 60);
+    	text("Gen #: " + pop.getBestGenNum(), 0, 300);
+    	text("Best distance: " + df.format(pop.getFittestMember().getDist()), 0, 330);
 	}
 
 }
