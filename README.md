@@ -1,13 +1,22 @@
 # The project in action!
+
+The top graph represents the average route in the current generation.
+
+The bottom graph represents the best route we've found so far among all generations.
+
+**50 city problem:**
+![50 City](https://user-images.githubusercontent.com/16530058/138945033-cf0a140b-8dac-41b2-b3bf-efc1b8806740.gif)
+
 **100 city problem:**
+![100 City](https://user-images.githubusercontent.com/16530058/138945077-5130541b-89f5-494b-b08e-1af30391a7c2.gif)
 
-The top graph represents the best route in the current generation
+In case you're wondering how many permutations we'd have to check with a brute force solution for this 100 city case, here is the number:
 
-The bottom graph represents the best route we've found so far
+100! = 93326215443944152681699238856266700490715968264381621468592963895217599993229915608941463976156518286253697920827223758251185210916864000000000000000000000000
 
-IMAGE HERE
+If you don't know what the TSP is or want to learn more about genetic algorithms, look below!
 
-If you don't know what the TSP is, learn more below!
+
 # The Travelling Salesman Problem Statement
 Given a list of cities and the distances between each pair of cities, what is the shortest possible route that visits each city exactly once and returns to the origin city? 
 
