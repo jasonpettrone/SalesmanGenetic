@@ -1,3 +1,10 @@
+# The Travelling Salesman Problem
+Given a list of cities and the distances between each pair of cities, what is the shortest possible route that visits each city exactly once and returns to the origin city?
+
+Trying to brute force this problem results in a running time of O(n!), which is really bad. We need to do better...
+
+Shown below are examples of my genetic algorithm running to solve the TSP significantly faster than the brute force method. Additionally, below that is a more in-depth explanation of genetic algorithms as well as the Travelling Salesman Problem. Enjoy!
+
 # The project in action!
 
 The top graph represents the average route in the current generation.
@@ -14,11 +21,31 @@ In case you're wondering how many permutations we'd have to check with a brute f
 
 100! = 93326215443944152681699238856266700490715968264381621468592963895217599993229915608941463976156518286253697920827223758251185210916864000000000000000000000000
 
+**Some quick math on this number:**
+
+In 2023 we will debut the worlds fastest supercomputer, El Capitan, which can peform up to 2 quintillion calculations per second (https://www.cnet.com/tech/computing/el-capitan-supercomputer-blow-past-rivals-with-2-quintillion-calculations-per-second/).
+
+Lets assume this computer could check 2 quintillion permutations of the TSP every second in the 100 city problem above. Lets try to figure out how long it would take for this computer to finish if we ran the brute force algorithm of the TSP.
+
+2 quintillion = 2000000000000000000
+
+ * 100! permutations / 2 quintillion permutations processed per second = 46663107721972076340849619428133350245357984132190810734296481947608799996614957804470731988078259143126848960413611879125592605458432000000 seconds to completion
+
+Lets convert the amount of seconds into years:
+
+* seconds / 60 seconds per minute / 60 minutes per hour / 24 hours per day / 365 days a year = 1479677439179733521716438972226450730763507868220155084167189305796829020694284557473069888003496294492860507369787286882470592512000 years to completion
+
+For fun, lets see if we could complete the alorgithm before the heat death of the universe:
+
+The heat death of the universe is expected to take around 10^100 years (https://phys.org/news/2015-09-fate-universeheat-death-big-rip.html)
+
+* years to completion / 10^100 = 147967743917973352171643897222645 heat death timelines
+
+Darn.
+
+Math done with the help of https://www.calculator.net/big-number-calculator.html
+
 If you don't know what the TSP is or want to learn more about genetic algorithms, look below!
-
-
-# The Travelling Salesman Problem Statement
-Given a list of cities and the distances between each pair of cities, what is the shortest possible route that visits each city exactly once and returns to the origin city? 
 
 # Brute Force Solution
 To brute force a solution to the Travelling Salesman Problem (TSP) we could simply measure the distance of every possible city permutation and return the shortest distance. Unfortunately the running time for this approach is O(n!) which quickly scales out of control.
