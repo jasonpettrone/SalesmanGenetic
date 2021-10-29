@@ -29,17 +29,17 @@ Lets assume this computer could check 2 quintillion permutations of the TSP ever
 
 2 quintillion = 2000000000000000000
 
- * 100! permutations / 2 quintillion permutations processed per second = 46663107721972076340849619428133350245357984132190810734296481947608799996614957804470731988078259143126848960413611879125592605458432000000 seconds to completion
+ * 100! permutations / 2 quintillion permutations processed per second = **46663107721972076340849619428133350245357984132190810734296481947608799996614957804470731988078259143126848960413611879125592605458432000000 seconds to completion**
 
 Lets convert the amount of seconds into years:
 
-* seconds / 60 seconds per minute / 60 minutes per hour / 24 hours per day / 365 days a year = 1479677439179733521716438972226450730763507868220155084167189305796829020694284557473069888003496294492860507369787286882470592512000 years to completion
+* seconds / 60 seconds per minute / 60 minutes per hour / 24 hours per day / 365 days a year = **1479677439179733521716438972226450730763507868220155084167189305796829020694284557473069888003496294492860507369787286882470592512000 years to completion**
 
 For fun, lets see if we could complete the alorgithm before the heat death of the universe:
 
 The heat death of the universe is expected to take around 10^100 years (https://phys.org/news/2015-09-fate-universeheat-death-big-rip.html)
 
-* years to completion / 10^100 = 147967743917973352171643897222645 heat death timelines
+* years to completion / 10^100 = **147967743917973352171643897222645 heat death timelines**
 
 Darn.
 
